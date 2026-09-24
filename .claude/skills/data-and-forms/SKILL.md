@@ -32,6 +32,17 @@ Typed call sites live in `lib/api/<domain>.ts` (e.g. `lib/api/github.ts`) and re
 - GitHub headers: `Accept: application/vnd.github+json`, `X-GitHub-Api-Version: 2022-11-28`, and `Authorization: Bearer ${token}` **only when the token exists**.
 - **Rate limits and outages are normal, not exceptional.** On failure, the section renders its typed fallback from `content/` and logs server-side. The user never sees an error state for decorative data.
 
+### GitHub, as built (`lib/api/github.ts`)
+
+- **Server components read `lib/api/github.ts` directly; the route handler is the client path.** The hero and the open-source section are server-rendered, so the feed is cached underneath both with `unstable_cache` (one hour, tag `github`, keyed by owner) and the home page sets `export const revalidate = 3600` so the prerendered HTML regenerates. `app/api/github/route.ts` returns the same already-fallen-back shape for anything that must run in the browser; nothing consumes it yet.
+- `GITHUB_OWNER` blank means **no request is made at all** — the hero hides its panel and the section renders `content/opensource.json`. That is what keeps `next build` off the network in CI. Never invent commits: the panel has no content fallback on purpose.
+- **The public events API no longer carries commit messages.** A `PushEvent` payload holds only `ref`, `head` and `before` (verified 2026-09-24), so "recent commits" come from `GET /repos/{owner}/{repo}/commits` on the most recently pushed repositories, merged by committer date, merge commits skipped. Four requests an hour, inside the unauthenticated limit of sixty.
+- "Pinned" repositories exist only in GraphQL, which needs a token unconditionally. The REST approximation is the owner's own non-fork, non-archived repositories, most-starred first.
+
+### Reads that resolve at build or revalidation time
+
+**Await them in the server component. Do not wrap them in `Suspense`.** On a prerendered route the read happens at build or regeneration, so a skeleton never paints for a visitor — and a boundary that suspends during prerender makes React emit the content as an out-of-order chunk: the fallback inline, the real markup appended at the end behind a swap script. That doubles the HTML and hides the content from anything that does not run JavaScript. Measured on `.next/server/app/index.html`, 2026-09-24. The three states for such a read are **live**, **typed fallback from `content/`**, and **empty**; the loading state is `Suspense` only where a request-time render can actually show it.
+
 ## Model async state as a discriminated union
 
 Never a bag of booleans (`isLoading`, `isError`, `data`) — that lets `isLoading && isError` typecheck and leaves the three states as something you remember to handle rather than something the compiler enforces.

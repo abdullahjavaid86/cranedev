@@ -11,7 +11,7 @@ A section is the unit of work in this repo. Build one at a time, take it all the
 
 Work in this order. Skipping step 1 or 2 is what produces sections that need rebuilding.
 
-1. **Content type first.** Define the shape in `types/index.ts`, then write the real data in `content/<thing>.ts`. Typed, no CMS. Writing the copy first tells you what the layout has to hold — see [content-and-copy](../content-and-copy/SKILL.md).
+1. **Content type first.** Define the zod schema in `lib/content/schemas.ts`, load it in `lib/content/index.ts`, then write the data in `content/<thing>.json`. Typed, no CMS. Writing the copy first tells you what the layout has to hold — see [content-and-copy](../content-and-copy/SKILL.md).
 2. **Static markup at 360px, zero motion.** Server component, real copy, real tokens, written mobile-first — unprefixed classes are the phone layout and `md:`/`lg:` only add. It must look right frozen and narrow. A section that only works once it moves, or only once it is wide, is a broken section.
 3. **Motion last, one moment.** Add the single orchestrated reveal from [motion-system](../motion-system/SKILL.md). Existing primitives only.
 4. **States, if async.** Loading, empty, and error designed at the same time as the happy path — see [data-and-forms](../data-and-forms/SKILL.md).
@@ -46,8 +46,8 @@ This matters most when sections are built in parallel by separate agents (`CLAUD
 ```
 components/sections/Testimonials.tsx    // server component; composes, holds no primitives
 components/ui/QuoteCard.tsx             // reusable primitive, named export
-content/testimonials.ts                 // typed data + real copy
-types/index.ts                          // Testimonial interface
+content/testimonials.json               // data + real copy
+lib/content/schemas.ts                  // TestimonialSchema; the type is z.infer
 ```
 
 Rules:

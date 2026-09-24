@@ -3,6 +3,7 @@ import { Brands } from "@/components/sections/Brands";
 import { Contact } from "@/components/sections/Contact";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { Hero } from "@/components/sections/Hero";
+import { OpenSource } from "@/components/sections/OpenSource";
 import { Process } from "@/components/sections/Process";
 import { Proof } from "@/components/sections/Proof";
 import { Services } from "@/components/sections/Services";
@@ -43,6 +44,7 @@ export default function Home() {
       <Testimonials />
       <Brands />
       <Process />
+      <OpenSource />
       <Contact />
       <CtaBand />
     </main>
