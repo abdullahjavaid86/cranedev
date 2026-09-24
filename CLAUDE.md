@@ -157,6 +157,7 @@ Define in `globals.css` as CSS variables, expose to Tailwind via `@theme`.
 --accent        the fill — one indigo, signature only               #3B5BDB / #6E82FF
 --accent-on     ink on the accent fill                              #FFFFFF / #06070A
 --accent-ink    accent text and borders                             #3B5BDB / #6E82FF
+--danger        validation errors only — text and the invalid border #B42318 / #F97066
 --scene-a/b/c   the ambient scene's gradient colours                 see §4.6
 --scene-pane    the scene's glass-pane tint                          rgba(255,255,255,.22) / rgba(232,237,245,.07)
 ```

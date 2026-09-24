@@ -16,8 +16,16 @@ import { ContactForm } from "./ContactForm";
  * No accent in this section — the CTA band below it owns the page's one
  * accent element, and the form's own submit button already carries the
  * primary variant, which is the single glowing thing in this viewport.
+ *
+ * `heading` is the one thing that changes between the home page and
+ * `/contact`: there it is the page's `h1`. Same section, same copy, so the
+ * two can never say different things about the reply time.
  */
-export function Contact() {
+interface ContactProps {
+  heading?: "h1" | "h2";
+}
+
+export function Contact({ heading: Heading = "h2" }: ContactProps) {
   return (
     <section id="contact" aria-labelledby="contact-heading" className="py-16 md:py-24">
       <Container>
@@ -25,9 +33,9 @@ export function Contact() {
           <div className="lg:col-span-5">
             <Reveal>
               <Eyebrow>Contact</Eyebrow>
-              <h2 id="contact-heading" className="mt-6 max-w-[22ch]">
+              <Heading id="contact-heading" className="mt-6 max-w-[22ch]">
                 Tell us what you are building.
-              </h2>
+              </Heading>
               <p className="mt-6 max-w-[60ch] text-muted">
                 You will get a reply from someone who would work on it, within one
                 business day. If it is not a fit we will say so and point you somewhere

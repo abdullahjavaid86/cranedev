@@ -199,7 +199,7 @@ export function ContactForm({ className }: { className?: string }) {
         {state.status === "error" ? state.message : ""}
       </span>
       {state.status === "error" ? (
-        <p ref={errorRef} tabIndex={-1} className="text-small text-fg">
+        <p ref={errorRef} tabIndex={-1} className="text-small text-danger">
           {state.message}
         </p>
       ) : null}

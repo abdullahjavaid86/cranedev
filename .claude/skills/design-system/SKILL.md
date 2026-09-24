@@ -34,6 +34,9 @@ Declared once in `app/globals.css`, exposed to Tailwind via `@theme`. Never rede
 | `bg-accent`                             | the accent **fill**    | `#3B5BDB`       | `#6E82FF`    |
 | `text-accent-on`                        | ink **on** the fill    | `#FFFFFF`       | `#06070A`    |
 | `text-accent-ink` / `border-accent-ink` | accent **text/border** | `#3B5BDB`       | `#6E82FF`    |
+| `text-danger` / `border-danger`         | validation errors only | `#B42318`       | `#F97066`    |
+
+`--danger` is for a message that something the user entered is wrong, and for the border of the control it belongs to. It is never a fill, an icon colour, or emphasis — a page with one red thing on it is a page with one error on it.
 
 Radius: `rounded-sm` 10px, `rounded-md` 16px, `rounded-lg` 24px. Nothing fully rounded except avatars and pills.
 
