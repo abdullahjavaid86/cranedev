@@ -50,11 +50,11 @@ Each route is a full deliverable: real copy, correct metadata, keyboard path, an
 
 The three designed states from [data-and-forms](../data-and-forms/SKILL.md) have App Router file conventions. Co-locate them in the segment folder alongside `page.tsx` — do not hand-roll equivalents inside the page.
 
-| File            | Role                                                                                |
-| --------------- | ----------------------------------------------------------------------------------- |
-| `loading.tsx`   | Route-level pending UI. Skeleton matching the final layout, never a spinner.        |
-| `error.tsx`     | Error boundary. **Must be a client component** (`'use client'`), and takes `reset`. |
-| `not-found.tsx` | Rendered by `notFound()`. The root one is the site 404.                             |
+| File            | Role                                                                                                                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `loading.tsx`   | Route-level pending UI. Skeleton matching the final layout, never a spinner.                                                                                                                                                   |
+| `error.tsx`     | Error boundary. **Must be a client component** (`'use client'`), and takes `reset`.                                                                                                                                            |
+| `not-found.tsx` | Rendered by `notFound()`. The site 404 is `app/(site)/not-found.tsx` — the modal slot's catch-all routes every unmatched URL into `(site)`, so that is the nearest boundary. It must not render chrome; the group layout does. |
 
 Wrap a slow or uncacheable part in its own `<Suspense>` so the static shell paints immediately and the rest of the route stays cacheable — the GitHub-fed sections are the case for this. A route group `(group)` organizes files without adding a URL segment; use it if the marketing routes need a shared layout that `/` does not.
 
