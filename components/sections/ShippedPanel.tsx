@@ -1,13 +1,6 @@
 import { Card } from "@/components/ui/Card";
-import { cn } from "@/lib/utils";
-
-export interface Commit {
-  sha: string;
-  repo: string;
-  message: string;
-  /** Pre-formatted relative time. Formatting is the caller's job. */
-  when: string;
-}
+import { cn, formatRelative } from "@/lib/utils";
+import type { Commit } from "@/types";
 
 interface ShippedPanelProps {
   commits: readonly Commit[];
@@ -15,9 +8,15 @@ interface ShippedPanelProps {
 }
 
 /**
- * The hero's proof, as a static list rather than a rotating ticker: recent
- * commits, in one glass card. M4.4 swaps `PLACEHOLDER_COMMITS` for the real
- * GitHub feed through the same prop, so this component does not change.
+ * The hero's proof, as a static list rather than a rotating ticker: the last
+ * three commits pushed under the configured GitHub account, in one glass
+ * card. The data arrives as a prop from the hero, which reads it through
+ * lib/api/github.ts; this component only lays it out.
+ *
+ * Renders nothing when there is nothing real to show. There is no placeholder
+ * list to fall back to on purpose — this panel's entire job is being real,
+ * so an empty account or an unreachable API means no panel, never an
+ * invented one (§4.5).
  *
  * A server component with no motion of its own — it rises in as one unit via
  * the `RiseIn` wrapper the hero already applies, and nothing inside it moves
@@ -42,7 +41,7 @@ export function ShippedPanel({ commits, className }: ShippedPanelProps) {
             <p className="mt-1 flex flex-wrap gap-x-2 text-small text-muted">
               <span>{commit.repo}</span>
               <span aria-hidden="true">·</span>
-              <span>{commit.when}</span>
+              <span>{formatRelative(commit.pushedAt)}</span>
               <span className="font-mono text-xs">{commit.sha}</span>
             </p>
           </li>
