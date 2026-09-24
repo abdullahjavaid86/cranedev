@@ -69,7 +69,9 @@ Every route inherits these, so get them right once in `layout/`:
 
 ## Page recipes
 
-**`/work` (Projects index)** — `<StaggerGroup />` over `content/work.ts`. Filter chips for stack or sector, driven by client-side state on a leaf component; filtering must not remount the grid. If there are fewer than 6 projects, ship the grid without filters rather than an empty filter bar.
+**`/work` (Projects index)** — `<StaggerGroup />` over `content/work.json`. Filter chips for stack, driven by client-side state on a leaf component (`FilteredProjects`); filtering must not remount the grid. Chips are only the tags shared by at least two projects and not by all — a chip that narrows to one card, or to every card, is furniture. Fewer than 6 projects, no filter bar at all.
+
+**`/work/[slug]` as a modal** — the `@modal` slot lives in `app/(site)/` beside the pages. Three files render `null` so the modal only shows when it should: `default.tsx` (hard navigation), `page.tsx` (client navigation to `/`) and `[...catchAll]/page.tsx` (client navigation anywhere else — slots keep their last page otherwise, so without this the modal follows the visitor to `/about`). `(.)work/[slug]/page.tsx` renders `ProjectModal` around the same `ProjectDetail` body the full page uses. Close is two steps: `onClose` flips `open` so the exit animates, and `router.back()` runs in `Modal`'s `onExitComplete`.
 
 **`/work/[slug]` (Project details)** — the page a CTO reads before booking. Structure:
 `problem → what we built → how → measurable outcome`. Hero with client name and one-line outcome carrying a real number; a quiet metadata row (stack, duration, team size, year) in Geist Sans, not mono; the narrative in `65ch` prose; at least one real artifact (architecture sketch, screenshot, or metric); a pull-quote from the client if one exists; next/previous project links. No generic "challenges and solutions" headings.
@@ -82,7 +84,7 @@ Every route inherits these, so get them right once in `layout/`:
 
 **`/schedule`** — booking, via **Calendly** (decided 2026-09-24). `components/ui/CalendlyEmbed` is a plain iframe of the scheduling link with Calendly's `embed_type=Inline` and colour parameters — no widget script, no dependency, and the colours are read from the live tokens on `<html>` so a token change re-themes it. The link lives in `siteLinks.calendly` (`lib/nav.ts`); while it is `null` the page renders the direct-channels fallback. Always keep the plain "open it on Calendly" link under the frame for browsers that block third-party frames. The `h1` is the CTA's own label, so button, title and heading say the same words. No CTA band on this page — its one action is the page itself.
 
-**`/careers`** — roles from `content/roles.ts`. Each row: title, quiet metadata (level, location, comp band, stack). State the comp band; withholding it costs more senior applicants than it saves. Include how we hire, step by step, with real timings. If there are no open roles, say so and offer a way to be told when there are — never an empty list.
+**`/careers`** — roles from `content/roles.json`. Each row: title, quiet metadata (level, location, comp band, stack). State the comp band; withholding it costs more senior applicants than it saves. Include how we hire, step by step, with real timings. If there are no open roles, say so and offer a way to be told when there are — never an empty list.
 
 **`/careers/[slug]`** — the role in full: what you'd own, what the first 90 days look like, what we expect you to already know, the interview loop, the band. Application form with a résumé/portfolio link field (URL, not upload — there is no blob storage), submitting through a Server Action into the `applications` collection.
 

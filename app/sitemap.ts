@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { projects } from "@/lib/content";
 import { siteOrigin } from "@/lib/seo";
 
 /**
@@ -12,6 +13,9 @@ import { siteOrigin } from "@/lib/seo";
  */
 const ROUTES: { path: string; priority: number }[] = [
   { path: "/", priority: 1 },
+  { path: "/work", priority: 0.9 },
+  ...projects.map(({ slug }) => ({ path: `/work/${slug}`, priority: 0.7 })),
+  { path: "/about", priority: 0.7 },
   { path: "/contact", priority: 0.8 },
   { path: "/schedule", priority: 0.8 },
   { path: "/team", priority: 0.6 },
