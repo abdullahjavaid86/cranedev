@@ -582,6 +582,8 @@ Full procedure in the `git-workflow` skill. The two rules that never bend:
 
 **One branch.** All work happens on `feature/fast-track`. No task branches, no topic branches. `staging` and `main` are integration branches — never commit to either directly. Check `git branch --show-current` before starting a task.
 
+**One checkout.** Make changes directly in the owner's checkout (`Project/js/crandev`) on `feature/fast-track` — not in a git worktree under `.claude/worktrees/`. The owner runs `yarn dev` from that checkout, and work that lands anywhere else is invisible there until it is merged: "the pages are not found" was the result the first time. If a tool or session mode forces a worktree anyway, the task is not done until the owner's checkout has been fast-forwarded to include it and the worktree removed.
+
 ```
 main  ←  staging  ←  feature/fast-track
 ```

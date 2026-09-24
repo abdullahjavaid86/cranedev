@@ -28,6 +28,7 @@ import type {
   Role,
   Service,
   Stat,
+  TeamContact,
   TeamMember,
   Testimonial,
 } from "./schemas";
@@ -41,6 +42,7 @@ export type {
   Role,
   Service,
   Stat,
+  TeamContact,
   TeamMember,
   Testimonial,
 };

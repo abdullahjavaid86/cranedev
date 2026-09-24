@@ -5,16 +5,17 @@ correct shape to render. None of it is true.
 
 Replace before launch:
 
-| file                      | what has to become real                                                                            |
-| ------------------------- | -------------------------------------------------------------------------------------------------- |
-| `work.json`               | clients, outcomes, stacks, dates. **Every `outcome` states a number that is made up.**             |
-| `stats.json`              | all four figures                                                                                   |
-| `testimonials.json`       | quotes and the people attributed to them — these are fabricated attributions to invented companies |
-| `brands.json`             | company names and logo files                                                                       |
-| `services.json`           | timelines and deliverables                                                                         |
-| `process.json`            | durations                                                                                          |
-| `team.json`, `roles.json` | still empty; fill when real                                                                        |
-| `opensource.json`         | the fallback repositories and profile URL, shown only when GitHub is unconfigured or unreachable   |
+| file                | what has to become real                                                                                                                                                                           |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `work.json`         | clients, outcomes, stacks, dates. **Every `outcome` states a number that is made up.**                                                                                                            |
+| `stats.json`        | all four figures                                                                                                                                                                                  |
+| `testimonials.json` | quotes and the people attributed to them — these are fabricated attributions to invented companies                                                                                                |
+| `brands.json`       | company names and logo files                                                                                                                                                                      |
+| `services.json`     | timelines and deliverables                                                                                                                                                                        |
+| `process.json`      | durations                                                                                                                                                                                         |
+| `team.json`         | **three invented people** with invented mailboxes and profile links, so the cards have a shape. No photos on purpose — a stock headshot is a fake person; a monogram is not. Replace every entry. |
+| `roles.json`        | still empty; fill when real                                                                                                                                                                       |
+| `opensource.json`   | the fallback repositories and profile URL, shown only when GitHub is unconfigured or unreachable                                                                                                  |
 
 `cover` and `photo` point at Unsplash placeholder URLs. When real images
 arrive they should become **static imports** (`import cover from

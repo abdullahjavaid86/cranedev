@@ -26,6 +26,8 @@ git status --short           # must be clean before you start
 
 If you are on `staging` or `main`, switch — never commit to either directly. If the tree is dirty from a previous task, finish or stash that work before starting a new one; a commit that mixes two tasks is not reviewable and is the main thing this workflow exists to prevent.
 
+**Work in the owner's checkout, not a worktree.** The owner runs the dev server from `Project/js/crandev`, so that is where changes have to be. Do not create a worktree under `.claude/worktrees/` for a task. If a session mode forces one, finish by fast-forwarding `feature/fast-track` in the owner's checkout to the worktree's commits and removing the worktree — a task whose code the owner cannot see in `yarn dev` is not finished.
+
 ## One task, one commit
 
 A task is a numbered row in `MILESTONES.md`. Each becomes exactly **one** commit on `feature/fast-track`.

@@ -42,15 +42,32 @@ export const ProjectSchema = z.object({
   weeks: z.number().int().positive().optional(),
 });
 
+/**
+ * Every channel is optional, and so is the block: a person with no public
+ * contact renders a card with no contact row, not a row of dashes.
+ */
+const ContactSchema = z.object({
+  email: z.email().optional(),
+  phone: z.string().min(1).optional(),
+  linkedin: z.string().url().optional(),
+  github: z.string().url().optional(),
+  website: z.string().url().optional(),
+});
+
 export const TeamMemberSchema = z.object({
   slug,
-  photo: imageUrl,
   name: z.string().min(1),
+  /** Designation, as it would read on a signature: "Staff engineer, platform". */
   role: z.string().min(1),
-  /** One line of substance — what they've shipped, not adjectives. */
+  /** One or two lines of substance — what they've shipped, not adjectives. */
   bio: z.string().min(1),
+  /** Optional: the card renders a monogram until a real photo exists. */
+  photo: imageUrl.optional(),
   stack: z.array(z.string().min(1)).default([]),
+  contact: ContactSchema.default({}),
 });
+
+export type TeamContact = z.infer<typeof ContactSchema>;
 
 export const TestimonialSchema = z.object({
   quote: z.string().min(1),
