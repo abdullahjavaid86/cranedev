@@ -98,7 +98,9 @@ Applies to contact, schedule-a-meeting, careers application, and anything else t
 
 - Contact: name, company, what you're building, budget range. Budget as a select of real bands.
 - Careers: name, email, links (URL fields — no file upload, since there is no blob storage), one substantive question specific to the role.
-- Schedule: date, slot, timezone (derived from `Intl.DateTimeFormat().resolvedOptions().timeZone`, editable), plus what they want to discuss.
+- Schedule: there is no form — booking is a Calendly embed (see [adding-a-page](../adding-a-page/SKILL.md)).
+
+**Errors are red.** Field error text, the form-level summary and the invalid control's border use the `--danger` token (`text-danger` / `border-danger`), never `text-fg` and never a Tailwind red. Every zod rule that can fail on user input carries its own message — a bare `z.enum(...)` leaks the whole option list into the form.
 
 **Accessibility floor** — full keyboard path, visible `:focus-visible` ring in `--accent-ink` on every control, checked in both themes, 44px minimum tap targets, correct `type`/`inputMode`/`autoComplete` on every input.
 
