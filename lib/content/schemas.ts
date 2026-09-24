@@ -115,3 +115,35 @@ export const ProcessStepSchema = z.object({
 export type Stat = z.infer<typeof StatSchema>;
 export type Service = z.infer<typeof ServiceSchema>;
 export type ProcessStep = z.infer<typeof ProcessStepSchema>;
+
+/**
+ * One public repository, as the open-source section renders it. Shared by
+ * the live feed (lib/api) and the typed fallback in content/opensource.json,
+ * so the two can never render differently.
+ *
+ * `stars` and `pushedAt` are nullable because the fallback carries neither:
+ * a star count that is not live is a number we made up, and the section is
+ * built to show fewer facts rather than invented ones (§8).
+ */
+export const RepoSchema = z.object({
+  /** `owner/name`, unique. */
+  fullName: z.string().regex(/^[\w.-]+\/[\w.-]+$/, "must be owner/name"),
+  url: z.string().url(),
+  description: z.string().nullable(),
+  language: z.string().nullable(),
+  stars: z.number().int().nonnegative().nullable(),
+  /** ISO timestamp of the last push. Formatted at render. */
+  pushedAt: z.string().datetime({ offset: true }).nullable(),
+});
+
+/**
+ * The fallback for the whole section: where "all repositories" points, and
+ * the repositories to show when the live feed is unreachable or unconfigured.
+ */
+export const OpenSourceSchema = z.object({
+  profileUrl: z.string().url(),
+  repos: z.array(RepoSchema),
+});
+
+export type Repo = z.infer<typeof RepoSchema>;
+export type OpenSource = z.infer<typeof OpenSourceSchema>;

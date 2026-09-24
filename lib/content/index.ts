@@ -6,9 +6,11 @@ import rawRoles from "@/content/roles.json";
 import rawStats from "@/content/stats.json";
 import rawServices from "@/content/services.json";
 import rawProcess from "@/content/process.json";
+import rawOpenSource from "@/content/opensource.json";
 
 import {
   BrandSchema,
+  OpenSourceSchema,
   ProcessStepSchema,
   ServiceSchema,
   StatSchema,
@@ -19,8 +21,10 @@ import {
 } from "./schemas";
 import type {
   Brand,
+  OpenSource,
   ProcessStep,
   Project,
+  Repo,
   Role,
   Service,
   Stat,
@@ -30,8 +34,10 @@ import type {
 
 export type {
   Brand,
+  OpenSource,
   ProcessStep,
   Project,
+  Repo,
   Role,
   Service,
   Stat,
@@ -72,6 +78,22 @@ export const roles = load(RoleSchema.array(), rawRoles, "roles");
 export const stats = load(StatSchema.array(), rawStats, "stats");
 export const services = load(ServiceSchema.array(), rawServices, "services");
 export const process = load(ProcessStepSchema.array(), rawProcess, "process");
+
+/**
+ * An object, not an array, so it bypasses `load` — same contract: parse once
+ * at the module boundary, throw with the file name if the shape is wrong.
+ * This is the typed fallback the open-source section renders when the live
+ * feed is unreachable or no owner is configured (§7.2).
+ */
+export const openSource: OpenSource = (() => {
+  try {
+    return OpenSourceSchema.parse(rawOpenSource);
+  } catch (err) {
+    throw new Error(
+      `content/opensource.json failed validation — see lib/content/schemas.ts\n${String(err)}`,
+    );
+  }
+})();
 
 /** Slug lookups for dynamic routes. Return undefined so callers can notFound(). */
 export const projectBySlug = (s: string): Project | undefined =>

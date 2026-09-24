@@ -25,3 +25,36 @@ export function cn(...inputs: ClassValue[]): string {
 
   return out.join(" ");
 }
+
+const relativeTime = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+const UNITS: { unit: Intl.RelativeTimeFormatUnit; seconds: number }[] = [
+  { unit: "year", seconds: 31_536_000 },
+  { unit: "month", seconds: 2_592_000 },
+  { unit: "week", seconds: 604_800 },
+  { unit: "day", seconds: 86_400 },
+  { unit: "hour", seconds: 3_600 },
+  { unit: "minute", seconds: 60 },
+];
+
+/**
+ * "3 days ago", "yesterday", "just now". The one relative-time formatter —
+ * the shipped panel and the open-source cards both read it, so a commit and
+ * a repo can never describe the same moment two different ways.
+ *
+ * Fixed locale on purpose: this runs on the server, where the locale would
+ * otherwise be whatever the host happens to be set to. `now` defaults here
+ * rather than in the component because a component must not read the clock
+ * during render (react-hooks/purity); the parameter exists for tests.
+ */
+export function formatRelative(iso: string, now = Date.now()): string {
+  const elapsed = Math.max(0, (now - Date.parse(iso)) / 1000);
+
+  for (const { unit, seconds } of UNITS) {
+    if (elapsed >= seconds) {
+      return relativeTime.format(-Math.floor(elapsed / seconds), unit);
+    }
+  }
+
+  return "just now";
+}
