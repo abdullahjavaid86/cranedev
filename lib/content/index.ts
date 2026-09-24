@@ -99,5 +99,21 @@ export const openSource: OpenSource = (() => {
 export const projectBySlug = (s: string): Project | undefined =>
   projects.find((p) => p.slug === s);
 
+/**
+ * The neighbours of a project in content order, for previous/next links on
+ * the case study. Wraps at both ends so the last project still leads
+ * somewhere; with one project both are undefined and the links are omitted.
+ */
+export function adjacentProjects(slug: string): {
+  previous?: Project;
+  next?: Project;
+} {
+  const index = projects.findIndex((p) => p.slug === slug);
+  if (index === -1 || projects.length < 2) return {};
+  const previous = projects[(index - 1 + projects.length) % projects.length];
+  const next = projects[(index + 1) % projects.length];
+  return { previous, next };
+}
+
 export const roleBySlug = (s: string): Role | undefined =>
   roles.find((r) => r.slug === s);
