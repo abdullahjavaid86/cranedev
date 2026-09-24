@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "slug": "amara-okafor",
+    "name": "Amara Okafor",
+    "role": "Founder, principal engineer",
+    "bio": "Led the ledger and ingest rebuilds and has been on the pager for both since. Reads the system before quoting it.",
+    "stack": ["Go", "Postgres", "Kafka"],
+    "contact": {
+      "email": "amara@cranedev.com",
+      "linkedin": "https://www.linkedin.com/in/amara-okafor",
+      "github": "https://github.com/amara-okafor"
+    }
+  },
+  {
+    "slug": "daniel-reyes",
+    "name": "Daniel Reyes",
+    "role": "Staff engineer, platform",
+    "bio": "Owns the event relay and the dispatch console. Writes the runbook before the feature ships.",
+    "stack": ["TypeScript", "NATS", "Kubernetes"],
+    "contact": {
+      "email": "daniel@cranedev.com"
+    }
+  },
+  {
+    "slug": "priya-natarajan",
+    "name": "Priya Natarajan",
+    "role": "Engineer, data",
+    "bio": "Built the incremental ingest and the search index rebuild. Measures before and after, every time.",
+    "stack": ["Python", "dbt", "Rust"]
+  }
+]

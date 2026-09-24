@@ -28,6 +28,13 @@ interface ModalProps {
    * `setState`. The primitive never decides which.
    */
   onClose: () => void;
+  /**
+   * Fired once the exit animation has finished and the panel has left the
+   * DOM. The intercepting route calls `router.back()` here rather than in
+   * `onClose`, because navigating away unmounts the slot at once and there
+   * would be nothing left to animate.
+   */
+  onExitComplete?: () => void;
   /** Required: a dialog with no accessible name is a defect. */
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -39,6 +46,7 @@ interface ModalProps {
 export function Modal({
   open,
   onClose,
+  onExitComplete,
   title,
   description,
   children,
@@ -99,7 +107,7 @@ export function Modal({
         nothing left to animate. It flows from the Portal down to Overlay and
         Content, and is repeated on both so the intent reads locally.
       */}
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={onExitComplete}>
         {open ? (
           <Dialog.Portal key="modal" forceMount>
             <Dialog.Overlay asChild forceMount>

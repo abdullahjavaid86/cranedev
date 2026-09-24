@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { projects } from "@/lib/content";
 import { siteOrigin } from "@/lib/seo";
 
 /**
@@ -8,15 +9,24 @@ import { siteOrigin } from "@/lib/seo";
  *
  * Routes are listed explicitly rather than derived. The marketing routes in
  * CLAUDE.md §6.0 do not all exist yet (M5), and a sitemap that advertises 404s
- * is worse than a short one.
+ * is worse than a short one. Add a route here in the same commit as its page.
  */
+const ROUTES: { path: string; priority: number }[] = [
+  { path: "/", priority: 1 },
+  { path: "/work", priority: 0.9 },
+  ...projects.map(({ slug }) => ({ path: `/work/${slug}`, priority: 0.7 })),
+  { path: "/about", priority: 0.7 },
+  { path: "/contact", priority: 0.8 },
+  { path: "/schedule", priority: 0.8 },
+  { path: "/team", priority: 0.6 },
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: siteOrigin,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-  ];
+  const lastModified = new Date();
+  return ROUTES.map(({ path, priority }) => ({
+    url: path === "/" ? siteOrigin : `${siteOrigin}${path}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority,
+  }));
 }

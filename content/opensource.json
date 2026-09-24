@@ -1,0 +1,29 @@
+{
+  "profileUrl": "https://github.com/cranedev",
+  "repos": [
+    {
+      "fullName": "cranedev/ledger-core",
+      "url": "https://github.com/cranedev/ledger-core",
+      "description": "Append-only double-entry ledger with idempotent writes and point-in-time balance reads.",
+      "language": "TypeScript",
+      "stars": null,
+      "pushedAt": null
+    },
+    {
+      "fullName": "cranedev/relay",
+      "url": "https://github.com/cranedev/relay",
+      "description": "Outbox-to-webhook relay with a per-consumer retry budget, so one slow sink cannot stall the rest.",
+      "language": "Go",
+      "stars": null,
+      "pushedAt": null
+    },
+    {
+      "fullName": "cranedev/atlas-ingest",
+      "url": "https://github.com/cranedev/atlas-ingest",
+      "description": "Incremental backfill runner for event streams. Resumes from the last committed window instead of reprocessing.",
+      "language": "Python",
+      "stars": null,
+      "pushedAt": null
+    }
+  ]
+}

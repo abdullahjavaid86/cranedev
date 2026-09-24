@@ -49,18 +49,23 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
 ];
 
 /**
- * Contact and social endpoints. Footer and the Contact section both read from
- * here, for the same reason the routes do.
+ * Contact and social endpoints. Footer, the Contact section and `/schedule`
+ * all read from here, for the same reason the routes do.
  *
- * NEEDS CONFIRMING BEFORE LAUNCH (D8) — both values are placeholders. The
- * mailbox has not been verified, and the GitHub handle is a guess:
- * `GITHUB_OWNER` in .env.example is still blank, so nothing in the repo knows
- * the real account. Fix both here, in one place, once they are known.
+ * `github` is the account the site's live feed reads (D3, resolved). The
+ * mailbox is still unverified (D8). `calendly` is the scheduling link
+ * `/schedule` embeds — `null` until the owner supplies it (D13), and the page
+ * renders its direct-channels fallback rather than a broken frame.
  */
-export const siteLinks = {
+export const siteLinks: {
+  email: string;
+  github: string;
+  calendly: string | null;
+} = {
   email: "hello@cranedev.com",
-  github: "https://github.com/cranedev",
-} as const;
+  github: "https://github.com/abdullahjavaid86",
+  calendly: null,
+};
 
 /**
  * Active-state test. `/` must match exactly or every route lights up; deeper

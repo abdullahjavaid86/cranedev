@@ -13,13 +13,13 @@ There is no CMS. Page content lives as **JSON** under `content/`, parsed through
 
 ```
 content/
-  services.ts  work.ts  process.ts  team.ts
-  testimonials.ts  brands.ts  roles.ts  availability.ts  faq.ts
+  work.json  team.json  testimonials.json  brands.json  roles.json
+  stats.json  services.json  process.json  opensource.json
 ```
 
 Rules:
 
-- Every content file exports a **typed const array** whose interface lives in `types/index.ts`. Use `satisfies` so the literal keeps its narrow type.
+- Every content file is parsed once in `lib/content/index.ts` through its zod schema in `lib/content/schemas.ts`, and the TypeScript type is `z.infer` of that schema — never a hand-written interface beside it. `types/index.ts` holds only the shapes that are **not** content (the GitHub `Commit`) and re-exports the content-derived ones it shares with the data layer (`Repo`).
 - Slugs are the join key between content and dynamic routes. Slug is `kebab-case`, stable, and never changes after publish.
 - Content files hold data and prose. **No JSX, no Tailwind classes, no components** in `content/`.
 - Content is also the typed fallback when a live source fails — see [data-and-forms](../data-and-forms/SKILL.md).

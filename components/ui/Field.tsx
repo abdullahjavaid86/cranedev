@@ -81,7 +81,7 @@ export function Field({
         {error ?? ""}
       </span>
       {error ? (
-        <p id={errorId} className="text-small text-fg">
+        <p id={errorId} className="text-small text-danger">
           {error}
         </p>
       ) : null}
@@ -94,5 +94,7 @@ export const controlStyles = cn(
   "min-h-11 w-full rounded-sm border border-line bg-raised px-4 py-3",
   "text-fg placeholder:text-muted",
   "transition-colors duration-(--d-micro) hover:border-line-strong",
-  "aria-[invalid=true]:border-line-strong",
+  // The one border that may leave --line: a control that failed validation
+  // takes the danger token, so the eye lands on the field, not just the text.
+  "aria-[invalid=true]:border-danger aria-[invalid=true]:hover:border-danger",
 );

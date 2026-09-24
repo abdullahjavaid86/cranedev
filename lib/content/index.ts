@@ -6,9 +6,11 @@ import rawRoles from "@/content/roles.json";
 import rawStats from "@/content/stats.json";
 import rawServices from "@/content/services.json";
 import rawProcess from "@/content/process.json";
+import rawOpenSource from "@/content/opensource.json";
 
 import {
   BrandSchema,
+  OpenSourceSchema,
   ProcessStepSchema,
   ServiceSchema,
   StatSchema,
@@ -19,22 +21,28 @@ import {
 } from "./schemas";
 import type {
   Brand,
+  OpenSource,
   ProcessStep,
   Project,
+  Repo,
   Role,
   Service,
   Stat,
+  TeamContact,
   TeamMember,
   Testimonial,
 } from "./schemas";
 
 export type {
   Brand,
+  OpenSource,
   ProcessStep,
   Project,
+  Repo,
   Role,
   Service,
   Stat,
+  TeamContact,
   TeamMember,
   Testimonial,
 };
@@ -73,9 +81,41 @@ export const stats = load(StatSchema.array(), rawStats, "stats");
 export const services = load(ServiceSchema.array(), rawServices, "services");
 export const process = load(ProcessStepSchema.array(), rawProcess, "process");
 
+/**
+ * An object, not an array, so it bypasses `load` — same contract: parse once
+ * at the module boundary, throw with the file name if the shape is wrong.
+ * This is the typed fallback the open-source section renders when the live
+ * feed is unreachable or no owner is configured (§7.2).
+ */
+export const openSource: OpenSource = (() => {
+  try {
+    return OpenSourceSchema.parse(rawOpenSource);
+  } catch (err) {
+    throw new Error(
+      `content/opensource.json failed validation — see lib/content/schemas.ts\n${String(err)}`,
+    );
+  }
+})();
+
 /** Slug lookups for dynamic routes. Return undefined so callers can notFound(). */
 export const projectBySlug = (s: string): Project | undefined =>
   projects.find((p) => p.slug === s);
+
+/**
+ * The neighbours of a project in content order, for previous/next links on
+ * the case study. Wraps at both ends so the last project still leads
+ * somewhere; with one project both are undefined and the links are omitted.
+ */
+export function adjacentProjects(slug: string): {
+  previous?: Project;
+  next?: Project;
+} {
+  const index = projects.findIndex((p) => p.slug === slug);
+  if (index === -1 || projects.length < 2) return {};
+  const previous = projects[(index - 1 + projects.length) % projects.length];
+  const next = projects[(index + 1) % projects.length];
+  return { previous, next };
+}
 
 export const roleBySlug = (s: string): Role | undefined =>
   roles.find((r) => r.slug === s);

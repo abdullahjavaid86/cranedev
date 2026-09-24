@@ -42,15 +42,32 @@ export const ProjectSchema = z.object({
   weeks: z.number().int().positive().optional(),
 });
 
+/**
+ * Every channel is optional, and so is the block: a person with no public
+ * contact renders a card with no contact row, not a row of dashes.
+ */
+const ContactSchema = z.object({
+  email: z.email().optional(),
+  phone: z.string().min(1).optional(),
+  linkedin: z.string().url().optional(),
+  github: z.string().url().optional(),
+  website: z.string().url().optional(),
+});
+
 export const TeamMemberSchema = z.object({
   slug,
-  photo: imageUrl,
   name: z.string().min(1),
+  /** Designation, as it would read on a signature: "Staff engineer, platform". */
   role: z.string().min(1),
-  /** One line of substance — what they've shipped, not adjectives. */
+  /** One or two lines of substance — what they've shipped, not adjectives. */
   bio: z.string().min(1),
+  /** Optional: the card renders a monogram until a real photo exists. */
+  photo: imageUrl.optional(),
   stack: z.array(z.string().min(1)).default([]),
+  contact: ContactSchema.default({}),
 });
+
+export type TeamContact = z.infer<typeof ContactSchema>;
 
 export const TestimonialSchema = z.object({
   quote: z.string().min(1),
@@ -115,3 +132,35 @@ export const ProcessStepSchema = z.object({
 export type Stat = z.infer<typeof StatSchema>;
 export type Service = z.infer<typeof ServiceSchema>;
 export type ProcessStep = z.infer<typeof ProcessStepSchema>;
+
+/**
+ * One public repository, as the open-source section renders it. Shared by
+ * the live feed (lib/api) and the typed fallback in content/opensource.json,
+ * so the two can never render differently.
+ *
+ * `stars` and `pushedAt` are nullable because the fallback carries neither:
+ * a star count that is not live is a number we made up, and the section is
+ * built to show fewer facts rather than invented ones (§8).
+ */
+export const RepoSchema = z.object({
+  /** `owner/name`, unique. */
+  fullName: z.string().regex(/^[\w.-]+\/[\w.-]+$/, "must be owner/name"),
+  url: z.string().url(),
+  description: z.string().nullable(),
+  language: z.string().nullable(),
+  stars: z.number().int().nonnegative().nullable(),
+  /** ISO timestamp of the last push. Formatted at render. */
+  pushedAt: z.string().datetime({ offset: true }).nullable(),
+});
+
+/**
+ * The fallback for the whole section: where "all repositories" points, and
+ * the repositories to show when the live feed is unreachable or unconfigured.
+ */
+export const OpenSourceSchema = z.object({
+  profileUrl: z.string().url(),
+  repos: z.array(RepoSchema),
+});
+
+export type Repo = z.infer<typeof RepoSchema>;
+export type OpenSource = z.infer<typeof OpenSourceSchema>;

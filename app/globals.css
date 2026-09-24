@@ -44,6 +44,10 @@
   --accent-on: #ffffff; /* ink that sits ON --accent */
   --accent-ink: #3b5bdb;
 
+  /* Validation errors only — text and the invalid control's border. Never a
+     fill, never decoration. 7.4:1 on --surface, 7.6:1 on --raised. */
+  --danger: #b42318;
+
   --glass-fill: rgba(255, 255, 255, 0.65);
   --glass-catch: rgba(255, 255, 255, 0.9);
   --glass-drop: rgba(6, 7, 10, 0.1);
@@ -102,6 +106,9 @@ html[data-sidebar="icons"] {
   --accent: #6e82ff;
   --accent-on: #06070a;
   --accent-ink: #6e82ff;
+
+  /* 8.3:1 on --surface, 7.6:1 on --raised. */
+  --danger: #f97066;
 
   --glass-fill: rgba(18, 21, 30, 0.6);
   --glass-catch: rgba(232, 237, 245, 0.07);
@@ -193,6 +200,7 @@ html[data-sidebar="icons"] {
   --color-accent: var(--accent);
   --color-accent-on: var(--accent-on);
   --color-accent-ink: var(--accent-ink);
+  --color-danger: var(--danger);
 
   /* next/font sets --font-*-src on <html>. Theme keys must NOT share those
      names — a self-reference is a cycle, and Tailwind resolves a cycle by

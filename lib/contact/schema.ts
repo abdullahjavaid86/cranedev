@@ -28,7 +28,9 @@ export const ContactInput = z.object({
     .trim()
     .min(20, "A sentence or two about the system, so we can reply usefully.")
     .max(2000),
-  budget: z.enum(BUDGET_BANDS),
+  // Without a message zod's default leaks the whole option list into the
+  // form: `Invalid option: expected one of "Under £25k"|…`.
+  budget: z.enum(BUDGET_BANDS, { error: "Pick a budget band." }),
 });
 
 export type ContactInput = z.infer<typeof ContactInput>;

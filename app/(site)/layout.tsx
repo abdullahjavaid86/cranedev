@@ -19,8 +19,13 @@ import { Scene } from "@/components/layout/Scene";
  * Returns a fragment on purpose: `body` is the flex column, and a wrapper div
  * here would make Header/Footer grandchildren of it and break the sticky
  * footer.
+ *
+ * `modal` is the parallel slot that lets `/work/[slug]` open over the page a
+ * visitor is on (§6.2). On a client-side navigation the slot renders the
+ * intercepted route; on a direct load, a refresh, or a shared link it renders
+ * `@modal/default.tsx` (nothing) and `children` is the full case-study page.
  */
-export default function SiteLayout({ children }: LayoutProps<"/">) {
+export default function SiteLayout({ children, modal }: LayoutProps<"/">) {
   return (
     <>
       <Scene />
@@ -29,6 +34,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <div className="flex-1">{children}</div>
       <Footer />
       <Grain />
+      {modal}
     </>
   );
 }

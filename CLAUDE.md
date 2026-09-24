@@ -157,6 +157,7 @@ Define in `globals.css` as CSS variables, expose to Tailwind via `@theme`.
 --accent        the fill — one indigo, signature only               #3B5BDB / #6E82FF
 --accent-on     ink on the accent fill                              #FFFFFF / #06070A
 --accent-ink    accent text and borders                             #3B5BDB / #6E82FF
+--danger        validation errors only — text and the invalid border #B42318 / #F97066
 --scene-a/b/c   the ambient scene's gradient colours                 see §4.6
 --scene-pane    the scene's glass-pane tint                          rgba(255,255,255,.22) / rgba(232,237,245,.07)
 ```
@@ -580,6 +581,8 @@ If the tracker and the code disagree, the code is right and the tracker is stale
 Full procedure in the `git-workflow` skill. The two rules that never bend:
 
 **One branch.** All work happens on `feature/fast-track`. No task branches, no topic branches. `staging` and `main` are integration branches — never commit to either directly. Check `git branch --show-current` before starting a task.
+
+**One checkout.** Make changes directly in the owner's checkout (`Project/js/crandev`) on `feature/fast-track` — not in a git worktree under `.claude/worktrees/`. The owner runs `yarn dev` from that checkout, and work that lands anywhere else is invisible there until it is merged: "the pages are not found" was the result the first time. If a tool or session mode forces a worktree anyway, the task is not done until the owner's checkout has been fast-forwarded to include it and the worktree removed.
 
 ```
 main  ←  staging  ←  feature/fast-track
